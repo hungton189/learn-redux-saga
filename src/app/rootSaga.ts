@@ -1,21 +1,16 @@
-import { PayloadAction } from "@reduxjs/toolkit";
-import { increment } from "features/counter/counterSlice";
-import {all, takeEvery} from "redux-saga/effects"
+import { PayloadAction } from '@reduxjs/toolkit';
+import {
+  incrementSaga,
+  incrementSagaSuccess,
+} from 'features/counter/counterSlice';
+import { delay, put, takeEvery, takeLatest } from 'redux-saga/effects';
 
-
-function log(action:PayloadAction){
-    console.log("logogo",action);
-    
-}
-function* helloSaga(){
-    console.log("hello saga");
-    
- yield takeEvery(increment().type,log);
- 
+function* handleIncrementSaga(action: PayloadAction<number>) {
+  yield delay(2000);
+  yield put(incrementSagaSuccess(action.payload));
 }
 
-export default function* rootSaga(){
-    console.log("root saga");
-    
-    yield all([helloSaga()]);
+export default function* rootSaga() {
+  //   yield takeEvery(incrementSaga.toString(), handleIncrementSaga);
+  yield takeLatest(incrementSaga.toString(), handleIncrementSaga);
 }
