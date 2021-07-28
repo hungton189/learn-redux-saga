@@ -3,7 +3,7 @@ import {
   incrementSaga,
   incrementSagaSuccess,
 } from 'features/counter/counterSlice';
-import { delay, put, takeEvery, takeLatest } from 'redux-saga/effects';
+import { delay, put, takeLatest } from 'redux-saga/effects';
 
 function* handleIncrementSaga(action: PayloadAction<number>) {
   yield delay(2000);
