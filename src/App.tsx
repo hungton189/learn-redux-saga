@@ -3,10 +3,14 @@ import logo from './logo.svg';
 import { Counter } from './features/counter/Counter';
 import './App.css';
 import cityApi from 'api/cityAPi';
+import studentApi from 'api/studentApi';
 
 function App() {
   useEffect(() => {
     cityApi.getAll().then((res) => console.log(res));
+    studentApi
+      .getAll({ _limit: 200, _page: 1, _sort: '1', _order: 'asc' })
+      .then((res) => console.log(res));
   }, []);
   return (
     <div className="App">
