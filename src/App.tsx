@@ -3,7 +3,7 @@ import NotFound from 'components/Common/NotFound';
 import AdminLayout from 'components/Layout/Admin';
 import LoginPage from 'features/auth/pages/LoginPage';
 import { Route, Switch } from 'react-router-dom';
-import './App.css';
+// import './App.css';
 
 function App() {
   return (
