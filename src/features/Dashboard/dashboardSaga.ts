@@ -42,8 +42,8 @@ function* fetchLowestStudentList() {
 function* fetchRankingByCityList() {
   // fetch city list
 
-  const { data: cityList }: ListResponse<City> = yield call(cityApi.getAll);
-  const callList = cityList.map((x) =>
+  const data: Array<City> = yield call(cityApi.getAll);
+  const callList = data.map((x) =>
     call(studentApi.getAll, {
       _page: 1,
       _limit: 5,
@@ -55,7 +55,7 @@ function* fetchRankingByCityList() {
   const responseList: Array<ListResponse<Student>> = yield all(callList);
   const rankingByCityList: Array<RankingByCity> = responseList.map(
     (x, idx) => ({
-      cityId: cityList[idx].code,
+      cityId: data[idx].code,
       rankingList: x.data,
     })
   );
@@ -75,8 +75,10 @@ function* fetchDashboardData() {
       call(fetchLowestStudentList),
       call(fetchRankingByCityList),
     ]);
+    yield put(dashboardActions.fetchDataSuccess());
   } catch (error) {
     console.log('fail to fetch dashboard data');
+    yield put(dashboardActions.fetchDataFailed());
   }
 }
 
