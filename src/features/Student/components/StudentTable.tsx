@@ -1,4 +1,4 @@
-import { Button, Paper } from '@material-ui/core';
+import { Box, Button, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -8,7 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { Student } from 'models';
 import React from 'react';
-import { capitalizedString } from 'utils';
+import { capitalizedString, getMarkColor } from 'utils';
 
 export interface StudentTableProps {
   studentList: Student[];
@@ -53,7 +53,9 @@ export default function StudentTable({
               </TableCell>
               <TableCell>{student.name}</TableCell>
               <TableCell>{capitalizedString(student.gender)}</TableCell>
-              <TableCell>{student.mark}</TableCell>
+              <TableCell>
+                <Box color={getMarkColor(student.mark)}>{student.mark}</Box>
+              </TableCell>
               <TableCell>{student.city}</TableCell>
               <TableCell align="right">
                 <Button
