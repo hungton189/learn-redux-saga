@@ -7,6 +7,7 @@ import {
 } from '@material-ui/core';
 import Pagination from '@material-ui/lab/Pagination';
 import { useAppDispatch, useAppSelector } from 'app/hooks';
+import { selectCityMap } from 'features/city/citySlice';
 import { Student } from 'models';
 import React, { useEffect } from 'react';
 import StudentTable from '../components/StudentTable';
@@ -47,6 +48,7 @@ export default function ListPage() {
   const pagination = useAppSelector(selectStudentPagination);
   const filter = useAppSelector(selectStudentFilter);
   const loading = useAppSelector(selectStudentLoading);
+  const cityMap = useAppSelector(selectCityMap);
 
   const onEdit = (student: Student) => {
     console.log('onEdit', student);
@@ -75,6 +77,7 @@ export default function ListPage() {
         studentList={studentList}
         onEdit={onEdit}
         onRemove={onRemove}
+        cityMap={cityMap}
       />
       <Box my={2} display="flex" justifyContent="center">
         <Pagination
