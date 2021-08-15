@@ -8,6 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { Student } from 'models';
 import React from 'react';
+import { capitalizedString } from 'utils';
 
 export interface StudentTableProps {
   studentList: Student[];
@@ -51,7 +52,7 @@ export default function StudentTable({
                 {idx + 1}
               </TableCell>
               <TableCell>{student.name}</TableCell>
-              <TableCell>{student.gender}</TableCell>
+              <TableCell>{capitalizedString(student.gender)}</TableCell>
               <TableCell>{student.mark}</TableCell>
               <TableCell>{student.city}</TableCell>
               <TableCell align="right">

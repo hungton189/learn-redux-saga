@@ -1,12 +1,15 @@
 import {
   Box,
   Button,
-  Typography,
-  makeStyles,
   LinearProgress,
+  makeStyles,
+  Typography,
 } from '@material-ui/core';
+import Pagination from '@material-ui/lab/Pagination';
 import { useAppDispatch, useAppSelector } from 'app/hooks';
+import { Student } from 'models';
 import React, { useEffect } from 'react';
+import StudentTable from '../components/StudentTable';
 import {
   selectStudentFilter,
   selectStudentList,
@@ -14,9 +17,6 @@ import {
   selectStudentPagination,
   studentActions,
 } from '../studentSlice';
-import StudentTable from '../components/StudentTable';
-import { Student } from 'models';
-import Pagination from '@material-ui/lab/Pagination';
 
 const useStyles = makeStyles((theme) => ({
   root: {
