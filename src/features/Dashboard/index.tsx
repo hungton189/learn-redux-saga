@@ -1,8 +1,16 @@
-import { Box, Grid, LinearProgress, makeStyles } from '@material-ui/core';
+import {
+  Box,
+  Grid,
+  LinearProgress,
+  makeStyles,
+  Typography,
+} from '@material-ui/core';
 import { PeopleAlt } from '@material-ui/icons';
 import { useAppDispatch, useAppSelector } from 'app/hooks';
 import React, { useEffect } from 'react';
 import StatisticItem from './components/StatisticItem';
+import StudentRankingList from './components/StudentRankingList';
+import Widget from './components/Widget';
 import {
   dashboardActions,
   selectDashboardLoading,
@@ -38,7 +46,7 @@ export default function Dashboard() {
   }, [dispatch]);
   return (
     <Box className={classes.root}>
-      {!loading && <LinearProgress className={classes.loading} />}
+      {loading && <LinearProgress className={classes.loading} />}
       {/* statistics */}
       <Grid container spacing={3}>
         <Grid item xs={12} md={6} lg={3} xl={3}>
@@ -70,6 +78,47 @@ export default function Dashboard() {
           />
         </Grid>
       </Grid>
+      {/* all student raking */}
+      <Box mt={4}>
+        <Typography variant="h4">All students</Typography>
+        <Box mt={3}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={6} lg={3} xl={3}>
+              <Widget title="Student with highest mark">
+                <StudentRankingList studentList={highestStudentList} />
+              </Widget>
+            </Grid>
+            <Grid item xs={12} md={6} lg={3} xl={3}>
+              <Widget title="Student with lowest mark">
+                <StudentRankingList studentList={lowestStudentList} />
+              </Widget>
+            </Grid>
+          </Grid>
+        </Box>
+      </Box>
+
+      {/* ranking by city */}
+      <Box mt={4}>
+        <Typography variant="h4">Ranking by city</Typography>
+        <Box mt={3}>
+          <Grid container spacing={3}>
+            {rankingByCityList.map((rankingByCity) => (
+              <Grid
+                item
+                xs={12}
+                md={6}
+                lg={3}
+                xl={3}
+                key={rankingByCity.cityId}
+              >
+                <Widget title={rankingByCity.cityName}>
+                  <StudentRankingList studentList={rankingByCity.rankingList} />
+                </Widget>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+      </Box>
     </Box>
   );
 }

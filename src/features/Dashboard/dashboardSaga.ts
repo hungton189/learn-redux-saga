@@ -48,7 +48,7 @@ function* fetchRankingByCityList() {
       _page: 1,
       _limit: 5,
       _sort: 'mark',
-      _order: 'asc',
+      _order: 'desc',
       city: x.code,
     })
   );
@@ -56,6 +56,7 @@ function* fetchRankingByCityList() {
   const rankingByCityList: Array<RankingByCity> = responseList.map(
     (x, idx) => ({
       cityId: data[idx].code,
+      cityName: data[idx].name,
       rankingList: x.data,
     })
   );
