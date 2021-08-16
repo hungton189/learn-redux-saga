@@ -6,6 +6,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import Pagination from '@material-ui/lab/Pagination';
+import studentApi from 'api/studentApi';
 import { useAppDispatch, useAppSelector } from 'app/hooks';
 import { selectCityList, selectCityMap } from 'features/city/citySlice';
 import { ListParams, Student } from 'models';
@@ -55,8 +56,15 @@ export default function ListPage() {
   const onEdit = (student: Student) => {
     console.log('onEdit', student);
   };
-  const onRemove = (student: Student) => {
-    console.log('onRemove', student);
+  const onRemove = async (student: Student) => {
+    try {
+      await studentApi.remove(student.id || '');
+      // trigger to re-fetch student list with current filter
+      dispatch(studentActions.setFilter({ ...filter }));
+    } catch (error) {
+      //toast error to user
+      console.log(error);
+    }
   };
 
   useEffect(() => {
