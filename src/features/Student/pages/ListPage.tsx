@@ -66,7 +66,9 @@ export default function ListPage() {
   const handleChangePage = (e: React.ChangeEvent<unknown>, page: number) => {
     dispatch(studentActions.setFilter({ ...filter, _page: page }));
   };
-  const onChange = () => {};
+  const onChange = (newFilter: ListParams) => {
+    dispatch(studentActions.setFilter(newFilter));
+  };
   const onChangeSearch = (newFilter: ListParams) => {
     dispatch(studentActions.setFilterWithSaga(newFilter));
   };
