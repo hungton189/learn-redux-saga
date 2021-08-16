@@ -7,9 +7,10 @@ import {
 } from '@material-ui/core';
 import Pagination from '@material-ui/lab/Pagination';
 import { useAppDispatch, useAppSelector } from 'app/hooks';
-import { selectCityMap } from 'features/city/citySlice';
-import { Student } from 'models';
+import { selectCityList, selectCityMap } from 'features/city/citySlice';
+import { ListParams, Student } from 'models';
 import React, { useEffect } from 'react';
+import StudentFilter from '../components/StudentFilter';
 import StudentTable from '../components/StudentTable';
 import {
   selectStudentFilter,
@@ -49,6 +50,7 @@ export default function ListPage() {
   const filter = useAppSelector(selectStudentFilter);
   const loading = useAppSelector(selectStudentLoading);
   const cityMap = useAppSelector(selectCityMap);
+  const cityList = useAppSelector(selectCityList);
 
   const onEdit = (student: Student) => {
     console.log('onEdit', student);
@@ -64,6 +66,10 @@ export default function ListPage() {
   const handleChangePage = (e: React.ChangeEvent<unknown>, page: number) => {
     dispatch(studentActions.setFilter({ ...filter, _page: page }));
   };
+  const onChange = () => {};
+  const onChangeSearch = (newFilter: ListParams) => {
+    dispatch(studentActions.setFilterWithSaga(newFilter));
+  };
   return (
     <Box className={classes.root}>
       {loading && <LinearProgress className={classes.loading} />}
@@ -72,6 +78,14 @@ export default function ListPage() {
         <Button variant="contained" color="primary">
           Add new student
         </Button>
+      </Box>
+      <Box my={2}>
+        <StudentFilter
+          filter={filter}
+          cityList={cityList}
+          onChange={onChange}
+          onChangeSearch={onChangeSearch}
+        />
       </Box>
       <StudentTable
         studentList={studentList}
