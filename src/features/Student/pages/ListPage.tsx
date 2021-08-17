@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from 'app/hooks';
 import { selectCityList, selectCityMap } from 'features/city/citySlice';
 import { ListParams, Student } from 'models';
 import React, { useEffect } from 'react';
+import { Link, useHistory, useRouteMatch } from 'react-router-dom';
 import StudentFilter from '../components/StudentFilter';
 import StudentTable from '../components/StudentTable';
 import {
@@ -45,6 +46,8 @@ const useStyles = makeStyles((theme) => ({
 export default function ListPage() {
   const dispatch = useAppDispatch();
   const classes = useStyles();
+  const match = useRouteMatch();
+  const history = useHistory();
 
   const studentList = useAppSelector(selectStudentList);
   const pagination = useAppSelector(selectStudentPagination);
@@ -54,7 +57,7 @@ export default function ListPage() {
   const cityList = useAppSelector(selectCityList);
 
   const onEdit = (student: Student) => {
-    console.log('onEdit', student);
+    history.push(`${match.url}/${student.id}`);
   };
   const onRemove = async (student: Student) => {
     try {
@@ -85,9 +88,11 @@ export default function ListPage() {
       {loading && <LinearProgress className={classes.loading} />}
       <Box className={classes.titleContainer}>
         <Typography variant="h4">Students</Typography>
-        <Button variant="contained" color="primary">
-          Add new student
-        </Button>
+        <Link to={`${match.url}/add`} style={{ textDecoration: 'none' }}>
+          <Button variant="contained" color="primary">
+            Add new student
+          </Button>
+        </Link>
       </Box>
       <Box my={2}>
         <StudentFilter
