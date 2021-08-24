@@ -6,6 +6,7 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import StudentForm from '../components/StudentForm';
 
 export default function AddEditPage() {
   const { studentId } = useParams<{ studentId: string }>();
@@ -26,7 +27,17 @@ export default function AddEditPage() {
     })();
   }, [studentId]);
 
-  if (studentId) console.log(student);
+  const initialValues: Student = {
+    name: '',
+    age: '',
+    mark: '',
+    city: '',
+    ...student,
+  } as Student;
+
+  const handleStudentFormSubmit = (formValues: Student) => {
+    console.log(student);
+  };
 
   return (
     <Box>
@@ -43,6 +54,14 @@ export default function AddEditPage() {
       <Typography variant="h4">
         {isEdit ? 'Edit student' : 'Add new student'}
       </Typography>
+      {(!isEdit || Boolean(student)) && (
+        <Box mt={3}>
+          <StudentForm
+            initialValue={initialValues}
+            onSubmit={handleStudentFormSubmit}
+          />
+        </Box>
+      )}
     </Box>
   );
 }
