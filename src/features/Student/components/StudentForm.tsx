@@ -1,14 +1,16 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Box } from '@material-ui/core';
+import { Box, Button, CircularProgress } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import { useAppSelector } from 'app/hooks';
 import {
   InputField,
   RadioGroupField,
   SelectField,
 } from 'components/FormFields';
-import { selectCityOptions } from 'features/city/citySlice';
+import { cityActions, selectCityOptions } from 'features/city/citySlice';
 import { Student } from 'models';
 import React from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
@@ -48,14 +50,25 @@ export default function StudentForm({
     gender: yup.string().oneOf(['male', 'female']).required(),
     city: yup.string().required(),
   });
-  const { control, handleSubmit } = useForm<Student>({
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<Student>({
     defaultValues: initialValue,
     resolver: yupResolver(schema),
   });
 
   const cityOption = useAppSelector(selectCityOptions);
-  const handleFormSubmit = (formValues: Student) => {
-    console.log('submit', formValues);
+  const [error, setError] = useState<string>('');
+
+  const handleFormSubmit = async (formValues: Student) => {
+    try {
+      setError('');
+      await onSubmit?.(formValues);
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   return (
@@ -73,13 +86,25 @@ export default function StudentForm({
         />
         <InputField name="age" control={control} label="Age" type="number" />
         <InputField name="mark" control={control} label="Mark" type="number" />
-        <SelectField
-          label="City"
-          name="city"
-          control={control}
-          options={cityOption}
-        />
-        <input type="submit" />
+        {Array.isArray(cityOption) && cityOption.length > 0 && (
+          <SelectField
+            label="City"
+            name="city"
+            control={control}
+            options={cityOption}
+          />
+        )}
+        {error && <Alert severity="error">{error}</Alert>}
+        <Box mt={3}>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            disabled={isSubmitting}
+          >
+            {isSubmitting && <CircularProgress size={16} />}Save
+          </Button>
+        </Box>
       </form>
     </Box>
   );

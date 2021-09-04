@@ -5,13 +5,14 @@ import { Student } from 'models';
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import StudentForm from '../components/StudentForm';
 
 export default function AddEditPage() {
   const { studentId } = useParams<{ studentId: string }>();
   const isEdit = Boolean(studentId);
   const [student, setStudent] = useState<Student>();
+  const history = useHistory();
 
   useEffect(() => {
     if (!studentId) return;
@@ -35,8 +36,12 @@ export default function AddEditPage() {
     ...student,
   } as Student;
 
-  const handleStudentFormSubmit = (formValues: Student) => {
-    console.log(student);
+  const handleStudentFormSubmit = async (formValues: Student) => {
+    if (isEdit) {
+      await studentApi.update(formValues);
+    }
+    await studentApi.add(formValues);
+    history.push('/admin/students');
   };
 
   return (
