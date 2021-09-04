@@ -12,6 +12,7 @@ import { Student } from 'models';
 import React from 'react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import * as yup from 'yup';
 
 export interface StudentFormProps {
@@ -66,7 +67,9 @@ export default function StudentForm({
     try {
       setError('');
       await onSubmit?.(formValues);
+      toast.success('Save student successfully');
     } catch (error) {
+      toast.error('Save student failed');
       setError(error.message);
     }
   };
